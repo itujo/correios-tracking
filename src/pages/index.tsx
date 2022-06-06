@@ -1,7 +1,8 @@
-import { Button, FormControl, Textarea } from '@chakra-ui/react';
-import { FormEvent, useState } from 'react';
+import { Box, Button, Flex, FormControl, Textarea } from '@chakra-ui/react';
+import { FormEvent, useEffect, useState } from 'react';
 import { ApiResponse, SroEvent } from '../@types';
 import { BackToTop } from '../components/BackToTopButton/BackToTop';
+import { SearchButton } from '../components/SearchButton/SearchButton';
 import { TrackAccordion } from '../components/TrackAccordion/TrackAccordion';
 
 export default function Index() {
@@ -14,6 +15,7 @@ export default function Index() {
   const [delivered, setDelivered] = useState<ApiResponse[]>([]);
   const [inTransit, setInTransit] = useState<ApiResponse[]>([]);
   const [noTracking, setNoTracking] = useState<ApiResponse[]>([]);
+  const [showForm, setShowForm] = useState(true);
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
@@ -54,29 +56,57 @@ export default function Index() {
     // setTracking(response);
   };
 
+  const clickSearchButton = () => {
+    setShowForm(true);
+  };
+
+  useEffect(() => {
+    if (delivered.length > 0 || inTransit.length > 0 || noTracking.length > 0) {
+      setShowForm(false);
+    } else {
+      setShowForm(true);
+    }
+  }, [delivered, inTransit, noTracking]);
+
   return (
     <>
-      <form onSubmit={submitForm}>
-        <FormControl>
-          <Textarea id='sro' placeholder='insert the sros' />
-          <Button type='submit' isLoading={loading}>
-            pesquisar
-          </Button>
-        </FormControl>
-      </form>
+      <Box mt='30vh' w='50%' ml='25%' display={showForm ? 'box' : 'none'}>
+        <form onSubmit={submitForm}>
+          <FormControl>
+            <Flex direction='column'>
+              <Textarea id='sro' placeholder='insert the tracking numbers' />
+              <Button
+                type='submit'
+                isLoading={loading}
+                p={4}
+                mt={4}
+                w='50%'
+                left='50%'
+              >
+                search
+              </Button>
+            </Flex>
+          </FormControl>
+        </form>
+      </Box>
 
-      {delivered.length > 0 && (
-        <TrackAccordion description='ENTREGUES' arr={delivered} />
-      )}
+      <Box>
+        {delivered.length > 0 && (
+          <TrackAccordion description='ENTREGUES' arr={delivered} />
+        )}
 
-      {inTransit.length > 0 && (
-        <TrackAccordion description='EM TRANSITO' arr={inTransit} />
-      )}
+        {inTransit.length > 0 && (
+          <TrackAccordion description='EM TRANSITO' arr={inTransit} />
+        )}
 
-      {noTracking.length > 0 && (
-        <TrackAccordion description='SEM TRACKING' arr={noTracking} />
-      )}
+        {noTracking.length > 0 && (
+          <TrackAccordion description='SEM TRACKING' arr={noTracking} />
+        )}
+      </Box>
 
+      <Button onClick={clickSearchButton}>
+        <SearchButton />
+      </Button>
       <BackToTop />
     </>
   );
