@@ -10,12 +10,19 @@ export default function Index() {
 
   const endpoint = '/api/tracking';
 
+  const [loading, setLoading] = useState(false);
   const [delivered, setDelivered] = useState<ApiResponse[]>([]);
   const [inTransit, setInTransit] = useState<ApiResponse[]>([]);
   const [noTracking, setNoTracking] = useState<ApiResponse[]>([]);
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
+
+    setLoading(true);
+
+    setDelivered([]);
+    setInTransit([]);
+    setNoTracking([]);
 
     const { sro } = e.target as SroEvent;
 
@@ -42,6 +49,8 @@ export default function Index() {
       }
     });
 
+    setLoading(false);
+
     // setTracking(response);
   };
 
@@ -50,7 +59,9 @@ export default function Index() {
       <form onSubmit={submitForm}>
         <FormControl>
           <Textarea id='sro' placeholder='insert the sros' />
-          <Button type='submit'>pesquisar</Button>
+          <Button type='submit' isLoading={loading}>
+            pesquisar
+          </Button>
         </FormControl>
       </form>
 
