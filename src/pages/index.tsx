@@ -104,9 +104,8 @@ export default function Index() {
         )}
       </Box>
 
-      <Button onClick={clickSearchButton}>
-        <SearchButton />
-      </Button>
+      <SearchButton onClick={clickSearchButton} />
+
       <BackToTop />
     </>
   );
