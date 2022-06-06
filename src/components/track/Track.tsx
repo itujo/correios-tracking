@@ -42,7 +42,7 @@ function Track({ obj }: Props) {
             <Box flex='1' textAlign='left'>
               <strong id='description'>{sro}</strong>
               &nbsp;-&nbsp;
-              {rastro?.at(-1)?.status ?? 'sem tracking nos correios'}
+              {rastro?.at(0)?.status ?? 'sem tracking nos correios'}
             </Box>
             <AccordionIcon />
           </AccordionButton>

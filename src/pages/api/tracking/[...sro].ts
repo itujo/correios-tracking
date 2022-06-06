@@ -16,13 +16,12 @@ export default async function handler(
       count += 1;
       const rastro = (
         (await rastrearEncomendas([enco])) as RastreioResponse
-      )[0];
+      )[0] as unknown as RastreioEvent[];
 
       return {
         id: count,
         sro: enco,
-        rastro:
-          (rastro as unknown as RastreioEvent[]).length > 1 ? rastro : null,
+        rastro: rastro.length > 1 ? rastro.reverse() : null,
       };
     })
   );

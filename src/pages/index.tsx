@@ -40,7 +40,7 @@ export default function Index() {
 
     // eslint-disable-next-line array-callback-return
     response.map((track) => {
-      const lastStatus = track.rastro?.at(-1)?.status;
+      const lastStatus = track.rastro?.at(0)?.status;
 
       if (!lastStatus) {
         setNoTracking((old) => [...old, track]);
