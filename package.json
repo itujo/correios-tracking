@@ -10,14 +10,18 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/icons": "^2.0.2",
     "@chakra-ui/react": "^2.1.2",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
+    "axios": "^0.27.2",
     "correios-brasil": "^2.2.2",
     "framer-motion": "^6",
     "next": "^12.1.6",
+    "nookies": "^2.5.2",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
+    "react-hook-form": "^7.32.2",
     "react-icons": "^4.4.0"
   },
   "devDependencies": {

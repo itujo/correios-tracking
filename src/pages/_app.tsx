@@ -1,10 +1,28 @@
 import { ChakraProvider } from '@chakra-ui/react';
-import { AppProps } from 'next/app';
+import type { AppProps } from 'next/app';
+import { NextPage } from 'next/types';
+import { ReactElement, ReactNode } from 'react';
+import { AuthProvider } from '../contexts/AuthContext';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+type NextPageWithLayout = NextPage & {
+  // eslint-disable-next-line no-unused-vars
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+function MyApp({ Component, pageProps }: AppPropsWithLayout) {
+  const getLayout = Component.getLayout ?? ((page) => page);
+
   return (
-    <ChakraProvider resetCSS>
-      <Component {...pageProps} />
-    </ChakraProvider>
+    <AuthProvider>
+      <ChakraProvider resetCSS>
+        {getLayout(<Component {...pageProps} />)}
+      </ChakraProvider>
+    </AuthProvider>
   );
 }
+
+export default MyApp;

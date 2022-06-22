@@ -23,3 +23,8 @@ export interface CEvent extends EventTarget {
     nodeValue?: string;
   };
 }
+export interface CustomEvent extends EventTarget {
+  [key: string]: {
+    value: string;
+  };
+}
