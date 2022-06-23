@@ -56,11 +56,11 @@ const NAV_ITEMS: Array<NavItem> = [
         subLabel: '',
         href: '/wms/item/inbound',
       },
-      // {
-      //   label: 'Outbound',
-      //   subLabel: '',
-      //   href: '/item/outbound',
-      // },
+      {
+        label: 'Outbound',
+        subLabel: '',
+        href: '/wms/item/outbound',
+      },
     ],
   },
 ];
