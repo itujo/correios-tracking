@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, Input, useToast } from '@chakra-ui/react';
+import { Box, Button, FormControl, Input } from '@chakra-ui/react';
 import { FormEvent, ReactElement, useRef, useState } from 'react';
 import useSWR from 'swr';
 import Layout from '../../../components/Layout';
@@ -10,11 +10,9 @@ export default function Outbound() {
 
   const [boxNo, setBoxNo] = useState('');
   const [itemCode, setItemCode] = useState('');
-  const [items, setItems] = useState(null);
-  const [dBoxNo, setdBoxNo] = useState(false);
+  const [items, setItems] = useState<any>(null);
   const boxNoRef = useRef<HTMLInputElement>(null);
   const itemCodeRef = useRef<HTMLInputElement>(null);
-  const toast = useToast();
 
   if (!data) return <Box>Loading data</Box>;
   if (error) {
@@ -29,7 +27,9 @@ export default function Outbound() {
     );
   }
 
-  const streetsWithOrders = data.map((order) => order.box.boxNo.split('-')[0]);
+  const streetsWithOrders = data.map(
+    (order: any) => order.box.boxNo.split('-')[0]
+  );
 
   const formSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -71,10 +71,12 @@ export default function Outbound() {
           //   items!.filter((item) => item.itemCode !== item.res.data.itemCode)
           // );
         })
-        .catch((err) => {
+        .catch(() => {
           alert('wrong item code or item already picked');
         });
     }
+
+    return 1;
   };
 
   return (
@@ -108,7 +110,7 @@ export default function Outbound() {
 
       {items && (
         <Box textAlign='center' mt={2}>
-          {items.map((item) => (
+          {items?.map((item: any) => (
             <Box key={item.id}>{item.itemCode}</Box>
           ))}
         </Box>
