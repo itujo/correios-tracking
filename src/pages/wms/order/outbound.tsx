@@ -15,14 +15,14 @@ export default function Outbound() {
 
   if (data.length > 0) {
     const streetsWithOrders = data.map(
-      (order) => order.box.boxNo.split('-')[0]
+      (order: any) => order.box.boxNo.split('-')[0]
     );
 
     console.log(streetsWithOrders);
 
     return (
       <Box textAlign='center' mt={2}>
-        {streetsWithOrders.map((street) => (
+        {streetsWithOrders.map((street: any) => (
           <Box>{street}</Box>
         ))}
       </Box>
