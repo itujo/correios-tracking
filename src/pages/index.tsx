@@ -1,5 +1,6 @@
 import { Box, Button, Flex, FormControl, Textarea } from '@chakra-ui/react';
 import { FormEvent, useEffect, useState } from 'react';
+import { utils, writeFile } from 'xlsx';
 import { ApiResponse, SroEvent } from '../@types';
 import { BackToTop } from '../components/BackToTopButton/BackToTop';
 import { SearchButton } from '../components/SearchButton/SearchButton';
@@ -16,6 +17,7 @@ export default function Index() {
   const [inTransit, setInTransit] = useState<ApiResponse[]>([]);
   const [noTracking, setNoTracking] = useState<ApiResponse[]>([]);
   const [showForm, setShowForm] = useState(true);
+  const [resSize, setResSize] = useState(0);
 
   const submitForm = async (e: FormEvent) => {
     e.preventDefault();
@@ -38,7 +40,8 @@ export default function Index() {
       await fetch(`${endpoint}/${sros}`)
     ).json()) as ApiResponse[];
 
-    // eslint-disable-next-line array-callback-return
+    setResSize(response.length);
+
     response.map((track) => {
       const lastStatus = track.rastro?.at(0)?.status;
 
@@ -49,15 +52,42 @@ export default function Index() {
       } else {
         setInTransit((old) => [...old, track]);
       }
+
+      return 1;
     });
 
     setLoading(false);
-
-    // setTracking(response);
   };
 
   const clickSearchButton = () => {
     setShowForm(true);
+  };
+
+  const downloadExcel = () => {
+    const filename = 'test.xlsx';
+
+    const wsName = 'sro';
+
+    const wb = utils.book_new();
+    // const ws = utils.aoa_to_sheet(data);
+
+    const data = [];
+
+    for (let index = 0; index < resSize; index += 1) {
+      data.push({
+        ENTREGUES: delivered[index] ? delivered[index].sro : null,
+        'EM TRANSITO': inTransit[index] ? inTransit[index].sro : null,
+        'SEM TRACKING': noTracking[index] ? noTracking[index].sro : null,
+      });
+    }
+
+    const ws = utils.json_to_sheet(data, {
+      header: ['ENTREGUES', 'EM TRANSITO', 'SEM TRACKING'],
+    });
+
+    utils.book_append_sheet(wb, ws, wsName);
+
+    writeFile(wb, filename);
   };
 
   useEffect(() => {
@@ -103,6 +133,10 @@ export default function Index() {
           <TrackAccordion description='SEM TRACKING' arr={noTracking} />
         )}
       </Box>
+
+      <button type='button' onClick={downloadExcel}>
+        download
+      </button>
 
       <SearchButton onClick={clickSearchButton} />
 
