@@ -10,7 +10,7 @@ export default function Index() {
   const splitRegex = /(\W+|[a-zA-Z]{2}[0-9]{9}[a-zA-Z]{2})/;
   const sroRegex = /^[a-zA-Z]{2}[0-9]{9}[a-zA-Z]{2}$/;
 
-  const endpoint = '/api/tracking';
+  const endpoint = '/api/track';
 
   const [loading, setLoading] = useState(false);
   const [delivered, setDelivered] = useState<ApiResponse[]>([]);
